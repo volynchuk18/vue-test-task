@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <input @input="request" v-model="input">
+    <div v-if="response">{{response}}</div>
   </div>
 </template>
 
@@ -15,11 +16,19 @@ export default {
         type: 'address',
         access_token: 'pk.eyJ1IjoiYWtpdm1vb3ZleCIsImEiOiJjanVndGYzaW8wbnc3NDl0OWQ5dGhnMXFmIn0.FmA74joXKHPcNrPFb4B6nA'
       };
-      axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.input}.json`, {params: {...data}})
+      try {
+        axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.input}.json`, {params: {...data}})
+            .then( res => {
+                this.response = res.data.features
+            })
+      } catch (e) {
+          alert(e)
+      }
     }
   },
   data() {
     return {
+      response: null,
       input: null,
     }
   },
