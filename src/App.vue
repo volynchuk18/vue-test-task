@@ -38,7 +38,6 @@ export default {
   },
   watch: {
     coordinationsInput() {
-      console.log(this.coordinationsInput)
       this.mapboxPlacesRequestHandler()
     }
   },
@@ -79,7 +78,7 @@ export default {
         access_token: this.accessToken,
       };
       try {
-        axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.coordinationsInput}.json`, {params: {...data}})
+        axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.coordinationsInput.trim()}.json`, {params: {...data}})
           .then( res => {
             this.mapboxPlacesResponse = res.data.features
           })
@@ -106,7 +105,7 @@ export default {
       }
     },
     similarDataEnoughtLength() {
-      return this.compareInputWithResponse && this.compareInputWithResponse.length > (this.getTextArrayFromResponse.length / 2);
+      return this.compareInputWithResponse && this.compareInputWithResponse.length >= (this.getTextArrayFromResponse.length / 2);
     }
   },
 }
